@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using UML;
 
-namespace React.Middleware
+namespace WebApi.Middleware
 {
     // You may need to install the Microsoft.AspNetCore.Http.Abstractions package into your project
     public class UMLMiddleware

@@ -18,15 +18,13 @@ namespace WebApi.Test
         private AtmCrsController _atmCrsController;
         private Mock<IAtmCrsService> _atmCrsServiceMock;
         private Mock<IMapper> _mapperMock;
-        private Mock<ILogger<AtmCrsController>> _loggerMock;
 
         [SetUp]
         public void Setup()
         {
             _atmCrsServiceMock = new Mock<IAtmCrsService>();
             _mapperMock = new Mock<IMapper>();
-            _loggerMock = new Mock<ILogger<AtmCrsController>>();         
-            _atmCrsController = new AtmCrsController(_atmCrsServiceMock.Object, _mapperMock.Object, _loggerMock.Object);
+            _atmCrsController = new AtmCrsController(_atmCrsServiceMock.Object, _mapperMock.Object);
         }
 
         [Test]

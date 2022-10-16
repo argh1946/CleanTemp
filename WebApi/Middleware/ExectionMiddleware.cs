@@ -5,8 +5,9 @@ using Core.Contracts;
 using System;
 using System.Net;
 using System.Threading.Tasks;
+using Core.Helper;
 
-namespace React.Modules
+namespace WebApi.Middleware
 {
     public class ExceptionMiddleware
     {
@@ -27,17 +28,19 @@ namespace React.Modules
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Oops, Something went wrong: {ex}");
                 await HandleExceptionAsync(httpContext, ex);
             }
         }
 
-        private Task HandleExceptionAsync(HttpContext context, Exception exception)
+        private Task HandleExceptionAsync(HttpContext context, Exception ex)
         {
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
-            return context.Response.WriteAsync(JsonConvert.SerializeObject(new ResponseMessage<bool>(false)));
+            _logger.LogError(ex, "خطا");
+            string[] err = { ex.Message + " / " + ex.InnerException?.Message };
+            var response = ResponseHelper.CreateReponse((object)null, false, err);
+            return context.Response.WriteAsync(JsonConvert.SerializeObject(response));
         }
     }
 }
