@@ -5,6 +5,8 @@ using Infrastructure.IoC;
 using React.IoC;
 using NLog;
 using NLog.Web;
+using FluentValidation.AspNetCore;
+using WebApi.Middleware;
 
 var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 try
@@ -19,7 +21,11 @@ try
     builder.Host.UseNLog();
 
     builder.Services.AddCors();
-    builder.Services.AddControllers();
+    builder.Services.AddControllers().AddFluentValidation().ConfigureApiBehaviorOptions(options =>
+    {
+        options.InvalidModelStateResponseFactory = CustomProblemDetails.MakeValidationResponse;
+    }); 
+
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
 
@@ -43,6 +49,7 @@ try
         app.UseSwaggerUI();
     }
 
+    app.UseMiddleware<ExceptionMiddleware>();
     app.UseAuthorization();
     app.MapControllers();
     app.Run();

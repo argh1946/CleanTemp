@@ -2,6 +2,7 @@
 using Core.Contracts.AtmCrs;
 using Core.DTOs;
 using Core.Entities;
+using Core.Helper;
 
 namespace Core.UseCases
 {
@@ -30,6 +31,13 @@ namespace Core.UseCases
             var data = await _uow.AtmCrsRepository.GetAllAsync(null, x => x.OrderByDescending(x => x.Id));
             return data;
            
+        }
+
+        public async Task<PaginatedList<AtmCrs>> GetAllPaginated()
+        {
+            var data = await _uow.AtmCrsRepository.GetAllPaginated();
+            return data;
+
         }
 
         public async Task<AtmCrs> GetByIdAsync(int id)

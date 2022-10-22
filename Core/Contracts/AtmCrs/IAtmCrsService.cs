@@ -1,4 +1,6 @@
 ﻿
+using Core.Helper;
+
 namespace Core.Contracts.AtmCrs
 {
     public interface IAtmCrsService
@@ -8,5 +10,7 @@ namespace Core.Contracts.AtmCrs
         Task AddAsync(Entities.AtmCrs atmCrs);
         Task Update(Entities.AtmCrs atmCrs);
         Task DeleteAsync(int id);
+
+        Task<PaginatedList<Entities.AtmCrs>> GetAllPaginated();
     }
 }

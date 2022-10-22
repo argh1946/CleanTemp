@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Core.Entities;
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using React.Mapper;
 
@@ -10,6 +12,8 @@ namespace React.IoC
         {
             var automapper = RegisterAutoMapperService();
             serviceCollection.AddSingleton(automapper);
+            serviceCollection.AddScoped<IValidator<AtmCrs>, AtmCrsValidator>();
+
         }
 
         private static IMapper RegisterAutoMapperService()

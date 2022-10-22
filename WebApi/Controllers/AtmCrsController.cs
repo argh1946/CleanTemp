@@ -5,6 +5,7 @@ using Core.DTOs;
 using Core.Entities;
 using Core.Filter;
 using Core.Helper;
+using FluentResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 
@@ -26,57 +27,48 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetAllAtmCrs()
+        public async Task<Result<IEnumerable<AtmCrsVM>>> GetAllAtmCrs()
         {
-
             var data = await _atmCrsService.GetAllAsync();
             var result = _mapper.Map<IEnumerable<AtmCrs>, IEnumerable<AtmCrsVM>>(data);
-            var reponse = ResponseHelper.CreateReponse(result, true, null);
-            return Ok(reponse);
+            return Result.Ok(result);
+        } 
+        
+        [HttpGet("[action]")]
+        public async Task<Result<PaginatedList<AtmCrs>>> GetAllPaginated()
+        {
+            var data = await _atmCrsService.GetAllPaginated();
+           // var result = _mapper.Map<IEnumerable<AtmCrs>, IEnumerable<AtmCrsVM>>(data);
+            return Result.Ok(data);
         }
 
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetByIdAtmCrs(int id)
+        public async Task<Result<AtmCrsVM>> GetByIdAtmCrs(int id)
         {
-
             var data = await _atmCrsService.GetByIdAsync(id);
             var result = _mapper.Map<AtmCrs, AtmCrsVM>(data);
-            var reponse = ResponseHelper.CreateReponse(result, true, null);
-            return Ok(reponse);
-
+            return Result.Ok(result);
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> AddAtmCrsAsync(AtmCrs AtmCrs)
+        public async Task<Result> AddAtmCrsAsync(AtmCrs AtmCrs)
         {
-
             await _atmCrsService.AddAsync(AtmCrs);
-            var response = ResponseHelper.CreateReponse((AtmCrsVM)null, true, null);
-            return Ok(response);
-
-
+            return Result.Ok();
         }
 
         [HttpPut("[action]")]
-        public async Task<IActionResult> UpdateAtmCrs(AtmCrs AtmCrs)
+        public async Task<Result> UpdateAtmCrs(AtmCrs AtmCrs)
         {
-
             await _atmCrsService.Update(AtmCrs);
-            var response = ResponseHelper.CreateReponse((AtmCrsVM)null, true, null);
-            return Ok(response);
-
-
+            return Result.Ok();
         }
 
         [HttpDelete("[action]")]
-        public async Task<IActionResult> DeleteAtmCrsAsync(int id)
-        {
-
+        public async Task<Result> DeleteAtmCrsAsync(int id)
+        {           
             await _atmCrsService.DeleteAsync(id);
-            var response = ResponseHelper.CreateReponse((AtmCrsVM)null, true, null);
-            return Ok(response);
-
-
+            return  Result.Ok();
         }
     }
 }

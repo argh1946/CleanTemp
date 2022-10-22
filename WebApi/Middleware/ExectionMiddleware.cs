@@ -6,6 +6,7 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using Core.Helper;
+using FluentResults;
 
 namespace WebApi.Middleware
 {
@@ -34,12 +35,11 @@ namespace WebApi.Middleware
 
         private Task HandleExceptionAsync(HttpContext context, Exception ex)
         {
+            Result result = new Result();
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-
             _logger.LogError(ex, "خطا");
-            string[] err = { ex.Message + " / " + ex.InnerException?.Message };
-            var response = ResponseHelper.CreateReponse((object)null, false, err);
+            var response = result.WithError(ex.Message);
             return context.Response.WriteAsync(JsonConvert.SerializeObject(response));
         }
     }
