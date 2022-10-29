@@ -7,7 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Data
+namespace Infrastructure.Data.Repositories
 {
     public abstract class RepositoryBase<T> : IAsyncGenericRepository<T> where T : BaseEntity
     {

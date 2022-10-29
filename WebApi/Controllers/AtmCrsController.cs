@@ -3,7 +3,6 @@ using Core.Contracts;
 using Core.Contracts.AtmCrs;
 using Core.DTOs;
 using Core.Entities;
-using Core.Filter;
 using Core.Helper;
 using FluentResults;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +24,8 @@ namespace WebApi.Controllers
             _atmCrsService = atmCrsService;
             _mapper = mapper;
         }
+
+
 
         [HttpGet("[action]")]
         public async Task<Result<IEnumerable<AtmCrsVM>>> GetAllAtmCrs()
@@ -71,4 +72,6 @@ namespace WebApi.Controllers
             return  Result.Ok();
         }
     }
+
+    
 }

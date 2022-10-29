@@ -4,16 +4,14 @@ using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using React.Mapper;
 
-namespace React.IoC
+namespace WebApi.Mapper
 {
-    public static class ServiceModuleExtentions
+    public static class RegisterAutoMapper
     {
-        public static void RegisterApiServices(this IServiceCollection serviceCollection)
+        public static void RegisterAutoMapperService(this IServiceCollection serviceCollection)
         {
             var automapper = RegisterAutoMapperService();
             serviceCollection.AddSingleton(automapper);
-            serviceCollection.AddScoped<IValidator<AtmCrs>, AtmCrsValidator>();
-
         }
 
         private static IMapper RegisterAutoMapperService()

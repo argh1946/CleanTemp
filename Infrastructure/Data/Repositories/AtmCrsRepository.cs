@@ -2,7 +2,7 @@
 using Core.Contracts.AtmCrs;
 using Core.Helper;
 
-namespace Infrastructure.Data
+namespace Infrastructure.Data.Repositories
 {
     public class AtmCrsRepository : RepositoryBase<AtmCrs>, IAtmCrsRepository
     {

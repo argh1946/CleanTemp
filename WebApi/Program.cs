@@ -1,12 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Infrastructure.Data;
-using Core.IoC;
-using Infrastructure.IoC;
-using React.IoC;
 using NLog;
 using NLog.Web;
 using FluentValidation.AspNetCore;
 using WebApi.Middleware;
+using Core.Contracts;
+using System.Reflection;
+using WebApi.Mapper;
 
 var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 try
@@ -29,10 +29,34 @@ try
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
 
-    builder.Services.RegisterCoreServices();
-    builder.Services.RegisterInfrastructureServices();
-    builder.Services.RegisterApiServices();
+    //------------------------------- IOC ------------------------------------
+    builder.Services.Scan(current => current
+               //Register Core Service
+               .FromAssemblies(typeof(Core.UseCases.AtmCrsService).GetTypeInfo().Assembly)
+               .AddClasses(theClass => theClass.InExactNamespaceOf<Core.UseCases.AtmCrsService>())
+               .AsSelf()
+               .AsImplementedInterfaces()
+               .WithScopedLifetime()
+               //Register Infrastructure Service
+               .FromAssemblies(typeof(Infrastructure.Data.Repositories.AtmCrsRepository).GetTypeInfo().Assembly)
+               .AddClasses(theClass => theClass.InExactNamespaceOf<Infrastructure.Data.Repositories.AtmCrsRepository>())
+               .AsSelf()
+               .AsImplementedInterfaces()
+               .WithScopedLifetime()
+               //Register Api Services
+               .FromAssemblies(typeof(Validation.AtmCrsValidator).GetTypeInfo().Assembly)
+               .AddClasses(theClass => theClass.InExactNamespaceOf<Validation.AtmCrsValidator>())
+               .AsSelf()
+               .AsImplementedInterfaces()
+               .WithScopedLifetime()
+               );
 
+    builder.Services.RegisterAutoMapperService();
+    builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+    //builder.Services.AddScoped<IUnitOfWorkDeposit, UnitOfWorkDeposit>();
+    //--------------------------------------------------------------------------
+
+   
     var app = builder.Build();
 
     app.UseCors(p =>
