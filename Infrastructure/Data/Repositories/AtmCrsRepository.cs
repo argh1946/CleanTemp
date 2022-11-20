@@ -12,7 +12,7 @@ namespace Infrastructure.Data.Repositories
 
         public async Task<PaginatedList<AtmCrs>> GetAllPaginated()
         {
-            var r = await _db.AtmCrs.AsQueryable().PaginatedListAsync();
+            var r = await _db.Set<AtmCrs>().AsQueryable().PaginatedListAsync();
             return r;
         }
     }

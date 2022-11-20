@@ -1,4 +1,6 @@
-﻿using Core.Entities;
+﻿using Core.Contracts;
+using Core.Entities;
+using Core.Helper;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Emit;
 
@@ -13,10 +15,14 @@ namespace Infrastructure.Data
         {
             base.OnModelCreating(builder);
 
-           
+
+            //builder.ApplyConfiguration(new StatusCfg());
+            var entitiesAssembly = typeof(BaseEntity).Assembly;
+            builder.RegisterEntityTypeConfiguration(entitiesAssembly);
+
         }
 
-        public DbSet<AtmCrs> AtmCrs { get; set; }
+        //public DbSet<AtmCrs> AtmCrs { get; set; }
        
 
     }

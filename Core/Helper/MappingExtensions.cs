@@ -1,6 +1,5 @@
 ﻿//using AutoMapper;
 //using AutoMapper.QueryableExtensions;
-
 using Microsoft.EntityFrameworkCore;
 
 namespace Core.Helper
